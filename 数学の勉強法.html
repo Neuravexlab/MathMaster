@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数学が解けない理由は、「考え方の手順」を知らないからです。</title>
+<!-- MathJax for LaTeX rendering -->
+<script>
+  MathJax = {
+    tex: { inlineMath: [['\\(','\\)'], ['$','$']], displayMath: [['\\[','\\]'], ['$$','$$']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+  };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+  :root {
+    --bg: #F8F9FC;
+    --surface: #FFFFFF;
+    --text: #1A1A1A;
+    --accent: #1A3A6B;
+    --accent-light: #EBF0FA;
+    --accent-mid: #4A6FA5;
+    --danger: #C0392B;
+    --danger-light: #FDF0EF;
+    --success: #1A6B3C;
+    --success-light: #EAF6EE;
+    --warn: #7A5C00;
+    --warn-light: #FDF8E8;
+    --rule: #D8E0EE;
+    --code-bg: #F0F3FA;
+    --radius: 8px;
+    --gap: 4.5em;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    font-size: 17px;
+    line-height: 1.9;
+    padding: 0 1em;
+  }
+
+  .container { max-width: 740px; margin: 0 auto; padding: 3em 0 6em; }
+
+  h1 {
+    font-size: 1.7em; font-weight: 900; line-height: 1.5;
+    letter-spacing: -0.02em; color: var(--accent);
+    border-left: 6px solid var(--accent); padding-left: 0.6em; margin-bottom: 2em;
+  }
+
+  nav {
+    background: var(--accent-light); border-radius: var(--radius);
+    padding: 1.4em 1.8em; margin-bottom: var(--gap);
+    border-left: 4px solid var(--accent-mid);
+  }
+  nav p.nav-title { font-weight: 800; color: var(--accent); margin-bottom: 0.8em; font-size: 0.95em; letter-spacing: 0.05em; }
+  nav ol { margin: 0; padding-left: 1.4em; color: var(--accent); font-size: 0.93em; line-height: 2.2; }
+  nav a { color: var(--accent); text-decoration: none; }
+
+  h2 { font-size: 1.25em; font-weight: 800; color: var(--text); margin-top: var(--gap); margin-bottom: 1.2em; padding-bottom: 0.4em; border-bottom: 2px solid var(--rule); }
+  h2.chapter { font-size: 1.3em; background: var(--accent); color: #fff; padding: 0.5em 0.8em; border-radius: var(--radius); border: none; }
+  h3 { font-size: 1.05em; font-weight: 700; color: var(--accent); margin-top: var(--gap); margin-bottom: 0.8em; }
+
+  p { margin-bottom: var(--gap); color: var(--text); }
+
+  blockquote {
+    background: var(--accent-light); border-left: 4px solid var(--accent-mid);
+    border-radius: 0 var(--radius) var(--radius) 0; padding: 1.2em 1.4em; margin-bottom: var(--gap);
+  }
+  blockquote p { margin-bottom: 0.6em; color: var(--accent); font-weight: 600; }
+  blockquote p:last-child { margin-bottom: 0; }
+
+  strong { color: var(--accent); font-weight: 700; }
+
+  pre {
+    background: var(--code-bg); border-radius: var(--radius); padding: 1.4em 1.6em;
+    font-family: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', monospace;
+    font-size: 0.88em; line-height: 2.3; overflow-x: auto;
+    margin-bottom: var(--gap); white-space: pre-wrap; word-break: break-all;
+  }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: var(--gap); font-size: 0.92em; }
+  th { background: var(--accent); color: #fff; padding: 0.6em 0.8em; text-align: left; font-weight: 700; }
+  td { padding: 0.6em 0.8em; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--accent-light); }
+
+  table.compare th { background: var(--accent); color: #fff; }
+  table.compare td.misconception { color: #9AAAC0; font-weight: 400; background: #F4F6FA; }
+  table.compare td.truth { color: var(--accent); font-weight: 800; font-size: 1.05em; background: var(--accent-light); }
+
+  hr { border: none; border-top: 2px solid var(--rule); margin: var(--gap) 0; }
+  ul, ol { padding-left: 1.6em; margin-bottom: var(--gap); }
+  li { margin-bottom: 0.5em; }
+
+  .badge-ng { display: inline-block; background: var(--danger-light); color: var(--danger); border: 1px solid var(--danger); border-radius: 4px; padding: 0.1em 0.5em; font-size: 0.85em; font-weight: 700; margin-right: 0.3em; }
+  .badge-ok { display: inline-block; background: var(--success-light); color: var(--success); border: 1px solid var(--success); border-radius: 4px; padding: 0.1em 0.5em; font-size: 0.85em; font-weight: 700; margin-right: 0.3em; }
+
+  .how-label { display: inline-block; background: var(--accent); color: #fff; font-size: 0.78em; font-weight: 800; padding: 0.15em 0.55em; border-radius: 4px; margin-right: 0.4em; vertical-align: middle; letter-spacing: 0.05em; }
+
+  .how-block { margin-bottom: var(--gap); }
+  .how-block .step { margin-bottom: 2em; padding: 1.2em 1.4em; background: var(--surface); border-radius: var(--radius); border-left: 3px solid var(--accent-mid); }
+  .how-block .step-label { display: block; font-weight: 800; color: var(--accent); font-size: 0.9em; letter-spacing: 0.03em; margin-bottom: 0.6em; }
+  .how-block .step-body { color: var(--text); line-height: 2.1; }
+  .how-block .step-body .ex { display: block; background: var(--code-bg); border-radius: 4px; padding: 0.8em 1em; margin-top: 0.8em; font-size: 0.9em; line-height: 2.2; }
+
+  /* 解析ボックス：問題→気づきの翻訳 */
+  .insight-box { background: #fff; border: 2px solid var(--accent-mid); border-radius: var(--radius); margin-bottom: 2em; overflow: hidden; }
+  .insight-box .ib-problem { background: var(--code-bg); padding: 0.9em 1.2em; font-size: 0.9em; border-bottom: 1px solid var(--rule); }
+  .insight-box .ib-label { font-size: 0.75em; font-weight: 800; color: var(--accent-mid); letter-spacing: 0.08em; display: block; margin-bottom: 0.3em; }
+  .insight-box .ib-arrow { text-align: center; padding: 0.4em; color: var(--accent-mid); font-size: 1.3em; font-weight: 900; border-bottom: 1px solid var(--rule); background: var(--bg); }
+  .insight-box .ib-insight { padding: 0.9em 1.2em; font-size: 0.9em; line-height: 2; }
+  .insight-box .ib-insight strong { color: var(--accent); }
+
+  /* 勉強STEPカード */
+  .study-flow { margin-bottom: var(--gap); }
+  .study-step { display: flex; gap: 1em; margin-bottom: 1.4em; align-items: flex-start; }
+  .study-step .ss-num { flex-shrink: 0; width: 2.2em; height: 2.2em; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.95em; margin-top: 0.1em; }
+  .study-step .ss-body { flex: 1; background: var(--surface); border-radius: var(--radius); padding: 1em 1.2em; border: 1px solid var(--rule); }
+  .study-step .ss-title { font-weight: 800; color: var(--accent); font-size: 0.95em; margin-bottom: 0.4em; display: block; }
+  .study-step .ss-desc { font-size: 0.9em; line-height: 2; color: var(--text); }
+  .study-step .ss-ex { display: block; background: var(--code-bg); border-radius: 4px; padding: 0.6em 0.9em; margin-top: 0.7em; font-size: 0.88em; line-height: 2; }
+
+  .phase-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: center; margin-bottom: var(--gap); }
+  .phase-arrow { display: flex; align-items: center; justify-content: center; padding: 0 0.7em; font-size: 2.2em; font-weight: 900; color: var(--accent-mid); line-height: 1; }
+  @media (max-width: 500px) { .phase-grid { grid-template-columns: 1fr; } .phase-arrow { transform: rotate(90deg); padding: 0.2em 0; text-align: center; } }
+  .phase-card { border-radius: var(--radius); overflow: hidden; border: 2px solid var(--accent); }
+  .phase-card.exec { border-color: var(--accent-mid); }
+  .phase-card-header { background: var(--accent); color: #fff; font-weight: 900; font-size: 0.88em; padding: 0.55em 1em; letter-spacing: 0.05em; text-align: center; }
+  .phase-card.exec .phase-card-header { background: var(--accent-mid); }
+  .phase-card-body { background: var(--surface); padding: 0.4em 1em; }
+  .phase-step { display: flex; align-items: flex-start; gap: 0.7em; padding: 0.6em 0; border-bottom: 1px solid var(--rule); }
+  .phase-step:last-child { border-bottom: none; }
+  .phase-step .ps-num { flex-shrink: 0; width: 1.6em; height: 1.6em; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.78em; font-weight: 900; }
+  .phase-card.exec .phase-step .ps-num { background: var(--accent-mid); }
+  .phase-step .ps-text { font-size: 0.88em; font-weight: 700; color: var(--text); line-height: 1.5; padding-top: 0.15em; }
+  @media (max-width: 500px) { .phase-grid { grid-template-columns: 1fr; } }
+
+  .scene-box { background: var(--accent-light); border-radius: var(--radius); padding: 1.4em 1.6em; margin-bottom: var(--gap); border: 1px solid var(--accent-mid); }
+  .scene-box .scene-label { font-size: 0.8em; font-weight: 800; color: var(--accent-mid); letter-spacing: 0.08em; margin-bottom: 0.6em; display: block; }
+  .scene-box p { margin-bottom: 0; color: var(--accent); font-style: italic; line-height: 2; }
+
+  .action-box { background: var(--accent); color: #fff; border-radius: var(--radius); padding: 2em 2em; margin-top: var(--gap); }
+  .action-box h3 { color: #fff; font-size: 1.15em; margin-top: 0; margin-bottom: 1em; }
+  .action-box p { color: #C8D8F0; margin-bottom: 1em; }
+  .action-box ol { color: #C8D8F0; }
+  .action-box li { margin-bottom: 0.6em; }
+  .action-box .note { margin-top: 1.4em; font-size: 0.92em; color: #9AB5D8; border-top: 1px solid rgba(255,255,255,0.3); padding-top: 1em; }
+
+  mjx-container { overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>数学が解けない理由は、<br>「考え方の手順」を知らないからです。</h1>
+
+<nav>
+  <p class="nav-title">目次</p>
+  <ol>
+    <li><a href="#intro">こんな経験、ありませんか</a></li>
+    <li><a href="#reason">なぜ「解けない」が続くのか：本当の原因</a></li>
+    <li><a href="#process">数学を解く8ステップ</a></li>
+    <li><a href="#how1">①〜④ 思考フェーズ：把握・実験・翻訳・方針</a></li>
+    <li><a href="#how2">⑤〜⑧ 実行フェーズ：立式・計算・吟味・検算</a></li>
+    <li><a href="#how3">計算力：毎日のルーティンで土台を作る</a></li>
+    <li><a href="#how4">公式は「導出」してから覚える</a></li>
+    <li><a href="#how5">解き直しの核心：「どう気づくか」を考える</a></li>
+    <li><a href="#how6">具体的な勉強STEP（問題集の使い方）</a></li>
+    <li><a href="#how7">エビングハウスの忘却曲線に基づく復習サイクル</a></li>
+  </ol>
+</nav>
+
+<h2 id="intro">こんな経験、ありませんか</h2>
+
+<p>数学の問題を前にしたとき、こんなことを感じたことはありますか？</p>
+
+<blockquote>
+  <p>「問題を読んだけど、何をすればいいか全く分からない」</p>
+  <p>「解説を見れば分かるのに、自分では全然解けない」</p>
+  <p>「練習問題はできるのに、模試や入試になると解けなくなる」</p>
+  <p>「数学は才能がある人だけ解けるのかと思い始めている」</p>
+</blockquote>
+
+<p>数学が解けないのは、才能や頭の良し悪しの問題ではありません。<strong>「問題を解くときの思考の手順」を知らないまま、答えを出すことだけをやろうとしているからです。</strong></p>
+
+<p>数学が得意な人は、問題を見た瞬間に何かを「ひらめいている」のではありません。無意識のうちに、正しい思考の手順を踏んでいるのです。この記事では、その手順を意識的に使えるようにするための方法を、具体的な場面がイメージできる粒度でお伝えします。</p>
+
+<hr>
+
+<h2 id="reason">なぜ「解けない」が続くのか：本当の原因</h2>
+
+<p>数学の問題を解く動作を細かく分解すると、実は8つのステップがあります。</p>
+
+<div class="phase-grid">
+  <div class="phase-card">
+    <div class="phase-card-header">🧠 思考フェーズ（ここが勝負）</div>
+    <div class="phase-card-body">
+      <div class="phase-step"><div class="ps-num">①</div><div class="ps-text">問題を把握する</div></div>
+      <div class="phase-step"><div class="ps-num">②</div><div class="ps-text">実験する<br><span style="font-size:0.85em;font-weight:400;color:#555">具体例を作って感触をつかむ</span></div></div>
+      <div class="phase-step"><div class="ps-num">③</div><div class="ps-text">翻訳する<br><span style="font-size:0.85em;font-weight:400;color:#555">定義・定理の言葉に言い換える</span></div></div>
+      <div class="phase-step"><div class="ps-num">④</div><div class="ps-text">方針を立てる<br><span style="font-size:0.85em;font-weight:400;color:#555">ゴールから逆算する</span></div></div>
+    </div>
+  </div>
+  <div class="phase-arrow">→</div>
+  <div class="phase-card exec">
+    <div class="phase-card-header">✏️ 実行フェーズ</div>
+    <div class="phase-card-body">
+      <div class="phase-step"><div class="ps-num">⑤</div><div class="ps-text">立式する</div></div>
+      <div class="phase-step"><div class="ps-num">⑥</div><div class="ps-text">計算する</div></div>
+      <div class="phase-step"><div class="ps-num">⑦</div><div class="ps-text">吟味する<br><span style="font-size:0.85em;font-weight:400;color:#555">必要十分性・範囲・場合分け</span></div></div>
+      <div class="phase-step"><div class="ps-num">⑧</div><div class="ps-text">検算する</div></div>
+    </div>
+  </div>
+</div>
+
+<p>ほとんどの人が⑤〜⑧（立式・計算・吟味・検算）はやっています。しかし①〜④（把握・実験・翻訳・方針）を意識的にやれていません。数学が得意な人はこの①〜④を無意識に、かつ正確に行っています。そして数学の「楽しさ」を感じられるのも、実はこの①〜④の部分です。</p>
+
+<p><strong>入試で解けない最大の原因は、①〜④の思考フェーズを飛ばして、いきなり⑤の立式・計算に進もうとすることです。</strong>この部分を意識的に磨くことで、初めて見る問題にも対応できる本物の数学力が身につきます。</p>
+
+<table class="compare">
+  <tr><th>よくある誤解</th><th>実際</th></tr>
+  <tr><td class="misconception">数学は才能やひらめきで解くもの</td><td class="truth">正しい思考の手順（①〜④）を踏めば、誰でも再現性高く解ける</td></tr>
+  <tr><td class="misconception">解説を読んで理解できれば次に進んでいい</td><td class="truth">「なぜこの解法に気づけるか」まで考えて初めて力になる</td></tr>
+  <tr><td class="misconception">計算練習より問題演習をたくさんやるべき</td><td class="truth">計算は毎日のルーティン。土台なしに問題演習をいくらやっても伸びない</td></tr>
+</table>
+
+<hr>
+
+<h2 id="process">数学を解く8ステップ</h2>
+
+<div class="phase-grid">
+  <div class="phase-card">
+    <div class="phase-card-header">🧠 思考フェーズ（ここが勝負）</div>
+    <div class="phase-card-body">
+      <div class="phase-step"><div class="ps-num">①</div><div class="ps-text">問題を把握する<br><span style="font-size:0.85em;font-weight:400;color:#555">与えられた条件・求めるものを正確に読む</span></div></div>
+      <div class="phase-step"><div class="ps-num">②</div><div class="ps-text">実験する<br><span style="font-size:0.85em;font-weight:400;color:#555">具体的な数字を入れて試す。問題の「感触」をつかむ</span></div></div>
+      <div class="phase-step"><div class="ps-num">③</div><div class="ps-text">翻訳する<br><span style="font-size:0.85em;font-weight:400;color:#555">問題文の言葉を定義・定理に言い換える</span></div></div>
+      <div class="phase-step"><div class="ps-num">④</div><div class="ps-text">方針を立てる<br><span style="font-size:0.85em;font-weight:400;color:#555">ゴールから逆算してどの解き方を使うかを決める</span></div></div>
+    </div>
+  </div>
+  <div class="phase-arrow">→</div>
+  <div class="phase-card exec">
+    <div class="phase-card-header">✏️ 実行フェーズ</div>
+    <div class="phase-card-body">
+      <div class="phase-step"><div class="ps-num">⑤</div><div class="ps-text">立式する<br><span style="font-size:0.85em;font-weight:400;color:#555">方針に沿って式を立てる</span></div></div>
+      <div class="phase-step"><div class="ps-num">⑥</div><div class="ps-text">計算する<br><span style="font-size:0.85em;font-weight:400;color:#555">式を正確に計算する</span></div></div>
+      <div class="phase-step"><div class="ps-num">⑦</div><div class="ps-text">吟味する<br><span style="font-size:0.85em;font-weight:400;color:#555">必要十分性・範囲・場合分けを確認する</span></div></div>
+      <div class="phase-step"><div class="ps-num">⑧</div><div class="ps-text">検算する<br><span style="font-size:0.85em;font-weight:400;color:#555">答えを別の方法で確かめる</span></div></div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2 id="how1" class="chapter">①〜④ 思考フェーズ：把握・実験・翻訳・方針</h2>
+
+<h3><span class="how-label">HOW</span> ① 問題を把握する</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">問題文を「条件」と「求めるもの」に分解する</span>
+    <div class="step-body">
+      問題を読み始めたとき、多くの人は「どう解くか」を考えながら読んでいます。これが間違いです。最初にやることは、問題文の情報を正確に把握することです。
+      <span class="ex">
+        ① 「与えられている条件」をすべて書き出す<br>
+           → 数値・不等式・グラフの形・文章で書かれた制約条件<br><br>
+        ② 「求めるもの」を正確に確認する<br>
+           → 値なのか、範囲なのか、証明なのか<br><br>
+        ③ 条件に赤線、求めるものに青線を引く
+      </span>
+      「何が与えられていて、何を求めるか」が明確になっただけで、解き方の候補がぐっと絞れます。
+    </div>
+  </div>
+</div>
+
+<h3><span class="how-label">HOW</span> ② 実験する（具体例を作る）</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">\(n = 1, 2, 3\) で試す。具体的な数字で問題の感触をつかむ</span>
+    <div class="step-body">
+      問題の構造が見えないとき、いきなり一般式を立てようとしても手が止まります。そういうときは「具体的な数字を当てはめて実験する」のが最も有効です。
+      <span class="ex">
+        例）「自然数 \(n\) について \(1 + 2 + 3 + \cdots + n\) を求めよ」<br><br>
+        \(n = 1\) のとき：\(1\)<br>
+        \(n = 2\) のとき：\(1 + 2 = 3\)<br>
+        \(n = 3\) のとき：\(1 + 2 + 3 = 6\)<br>
+        \(n = 4\) のとき：\(1 + 2 + 3 + 4 = 10\)<br><br>
+        \(1,\ 3,\ 6,\ 10,\ \ldots\) → 差が \(2,\ 3,\ 4,\ \ldots\) と増えている<br>
+        → 「\(\dfrac{n(n+1)}{2}\) かもしれない」という仮説が生まれる
+      </span>
+      実験は「答えを出すため」ではなく、「問題の仕組みを理解するため」にやります。
+    </div>
+  </div>
+  <div class="step">
+    <span class="step-label">図や表を書いて視覚化する</span>
+    <div class="step-body">
+      図形問題や確率の問題では、図を書くことが「実験」になります。
+      <span class="ex">
+        確率の問題 → 樹形図や表を書いてパターンを数える<br>
+        図形の問題 → できるだけ正確な図を描き、補助線・補助点を書き込む<br>
+        関数の問題 → グラフを大まかに描いて求めている部分を把握する<br><br>
+        【実験で生まれる気づきの例】<br>
+        「確率、全部で12通りしかないから書き出せる」<br>
+        「この三角形、直角三角形に分割できそう」<br>
+        「\(x = 2\) 付近に極値がある」
+      </span>
+    </div>
+  </div>
+</div>
+
+<h3><span class="how-label">HOW</span> ③ 翻訳する（数学の言葉に言い換える）</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">問題文の日本語を「定義・定理」に変換する</span>
+    <div class="step-body">
+      これが数学力の核心です。問題文に書かれた言葉を、自分が知っている数学の知識に結びつける力が「翻訳力」です。英語の読解で語彙力が重要なのと同じで、数学では定義を正確に知っていることが翻訳の基盤になります。
+      <span class="ex">
+        「3つの実数解を持つ」<br>
+        → 3次関数のグラフが \(x\) 軸と3点で交わる<br>
+        → （極大値）\(&gt; 0\) かつ （極小値）\(&lt; 0\)<br><br>
+        「\(|x - 3| \leq 2\)」<br>
+        → \(x\) と \(3\) の距離が \(2\) 以内<br>
+        → \(1 \leq x \leq 5\)<br><br>
+        「整数 \(n\) が3の倍数」<br>
+        → \(n = 3k\)（\(k\) は整数）と置ける<br><br>
+        「点 \(\mathrm{P}\) から直線 \(\ell\) への距離が最小」<br>
+        → 点と直線の距離の公式を使う
+      </span>
+      翻訳ができないのは、定義を正確に覚えていないからです。「なんとなく知っている」ではなく「言葉で正確に言える」レベルまで定義を理解することが、翻訳力を高めます。
+    </div>
+  </div>
+  <div class="step" style="border-left-color:var(--accent);background:var(--accent-light);">
+    <span class="step-label" style="color:var(--accent);">📄 分野別・解法別の翻訳対応表（別ページ）</span>
+    <div class="step-body">
+      問題文のキーワードと解法の対応をまとめた一覧です。問題を解くときの「辞書」として使ってください。
+      <span class="ex" style="background:var(--surface);">
+        <strong>数学の翻訳リスト</strong>に含まれる内容：<br>
+        ・代数・幾何・解析・統計 4分野の全体像と特徴<br>
+        ・各分野のメリット・デメリット<br>
+        ・主要解法（微分・相加相乗・ベクトルなど）のメリット・デメリット<br>
+        ・問題文キーワード → 解法・定理の対応表（全5分野）
+      </span>
+    </div>
+  </div>
+</div>
+
+<h3><span class="how-label">HOW</span> ④ 方針を立てる（逆算思考）</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">ゴールから逆算して「何が分かれば解けるか」を考える</span>
+    <div class="step-body">
+      <span class="ex">
+        例）「\(\triangle ABC\) の面積を求めよ（\(AB = 5,\ BC = 7,\ \angle B = 60°\)）」<br><br>
+        ゴール：\(\triangle ABC\) の面積<br><br>
+        逆算①：面積の公式は？<br>
+        \[S = \frac{1}{2} \cdot AB \cdot BC \cdot \sin(\angle B)\]<br>
+        逆算②：\(AB,\ BC,\ \sin B\) は与えられているか？<br>
+        → \(AB = 5,\ BC = 7,\ \sin 60° = \dfrac{\sqrt{3}}{2}\) → 全部分かる<br><br>
+        方針：\(\dfrac{1}{2} \times 5 \times 7 \times \dfrac{\sqrt{3}}{2}\) を計算すればいい
+      </span>
+    </div>
+  </div>
+  <div class="step">
+    <span class="step-label">詰まったら「何が分かれば何が求まるか」を紙に書き出す</span>
+    <div class="step-body">
+      <span class="ex">
+        自問の形式：<br><br>
+        「求めるものは \(\triangle\)。<br>
+         \(\triangle\) を求めるには \(\bigcirc\) が分かればいい。<br>
+         \(\bigcirc\) を求めるには \(\square\) が分かればいい。<br>
+         \(\square\) は問題に与えられているか？」<br><br>
+        → この連鎖を紙に書き出す。頭の中だけで考えると堂々巡りになる。
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="scene-box">
+  <span class="scene-label">📐 ①〜④を意識した2ヶ月後のあなた</span>
+  <p>模試の問題を開いたとき、まず条件と求めるものを確認する。次に具体的な数字を当てはめてみる。その感触から「これは○○の定理が使えそうだ」という翻訳が生まれる。ゴールから逆算して解く筋道が見える。鉛筆を走らせる前に、解き方が見えている状態です。</p>
+</div>
+
+<hr>
+
+<h2 id="how2" class="chapter">⑤〜⑧ 実行フェーズ：立式・計算・吟味・検算</h2>
+
+<h3><span class="how-label">HOW</span> ⑤ 立式する</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">文字を置くとき・式を立てるとき、理由を一言メモする</span>
+    <div class="step-body">
+      <span class="ex">
+        ① 文字を置いたら何をおいたか必ず書く<br>
+           「リンゴの個数を \(x\) 個とおく」<br><br>
+        ② 等式・不等式を立てるとき、なぜその式が成立するかを書く<br>
+           「合計10個だから \(x + y = 10\)」<br><br>
+        ③ 連立方程式の処理は手順を明記する<br>
+           「\(\text{①} \times 4 - \text{②}\) より：\(\cdots\)」
+      </span>
+    </div>
+  </div>
+</div>
+
+<h3><span class="how-label">HOW</span> ⑦ 吟味する</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">答えが出たら「本当にこれで合っているか」を確認する</span>
+    <div class="step-body">
+      <span class="ex">
+        吟味のチェックリスト：<br><br>
+        □ 解が定義域・自然数条件などを満たしているか<br>
+        □ 場合分けが必要な問題で、すべてのケースを考えたか<br>
+        □ 必要条件と十分条件を混同していないか<br>
+           「\(a &gt; 0 \Rightarrow a^2 &gt; 0\)」は真。<br>
+           「\(a^2 &gt; 0 \Rightarrow a &gt; 0\)」は偽（\(a &lt; 0\) もある）<br>
+        □ 個数がマイナス、確率が1を超えるなど不自然な答えになっていないか<br>
+        □ 最大・最小を求める問題で端点を確認したか
+      </span>
+    </div>
+  </div>
+</div>
+
+<h3><span class="how-label">HOW</span> ⑧ 検算する</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">答えを「別の方法」で確かめる</span>
+    <div class="step-body">
+      <span class="ex">
+        ① 方程式の解を元の式に代入して左辺＝右辺を確認<br>
+        ② 具体的な数字で実験した結果と答えが一致するか確認<br>
+        ③ グラフや図を使って答えの位置・大きさが妥当か確認<br>
+        ④ 単位・次元を確認（面積の答えが cm になっていないか、など）
+      </span>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2 id="how3" class="chapter">計算力：毎日のルーティンで土台を作る</h2>
+
+<p>思考フェーズ（①〜④）がどれだけ優れていても、計算でミスをすれば答えは合いません。計算力は「量」で身につけるものです。毎日のルーティンとして取り組んでください。</p>
+
+<h3><span class="how-label">HOW</span> 計算ルーティンの作り方（毎朝15〜20分）</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">毎朝15〜20分、計算だけをやる時間を作る</span>
+    <div class="step-body">
+      <span class="ex">
+        【毎朝の計算メニュー】<br><br>
+        分数・小数の計算（5分）<br>
+        \(\dfrac{3}{4} \div \dfrac{5}{6} + \dfrac{1}{3} \times \dfrac{2}{5}\) のような計算<br>
+        目標：ミスなく60秒以内<br><br>
+        式の展開・因数分解（5分）<br>
+        \((a + b)^2 = a^2 + 2ab + b^2\) などの公式を瞬時に使う<br>
+        目標：1問10〜15秒以内<br><br>
+        平方根・指数計算（5分）<br>
+        \(\sqrt{6} \times \sqrt{10},\quad (\sqrt{3} + 1)^2,\quad 2^3 \times 2^5\) など
+      </span>
+      毎日続けることで「計算の自動化」が進みます。計算に脳のリソースを使わなくて済むようになると、思考フェーズ（①〜④）に全力を注げるようになります。
+    </div>
+  </div>
+  <div class="step">
+    <span class="step-label">計算ミスのパターンを記録する</span>
+    <div class="step-body">
+      <span class="ex">
+        符号ミス：\((-3)^2 = 9\) を \(-9\) と計算する<br>
+        → 対策：負の数は必ず \((\quad)\) でくくる<br><br>
+        分配忘れ：\(2(x + 3) = 2x + 3\) になる<br>
+        → 対策：括弧の前の係数を声に出して確認する<br><br>
+        移項ミス：\(x - 5 = 3\) で \(x = 3 - 5\) になる<br>
+        → 対策：移項したら符号が変わるか確認する<br><br>
+        途中省略：途中式を省いて間違える<br>
+        → 対策：1行1変形のルールを徹底する
+      </span>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2 id="how4" class="chapter">公式は「導出」してから覚える</h2>
+
+<p>多くの人は公式を「暗記するもの」として扱います。しかし、<strong>公式の導出プロセスこそが入試で問われています。</strong>導出できる人は公式を忘れても自分で作れる。そして初見の問題にも、同じ発想で対応できます。</p>
+
+<h3><span class="how-label">HOW</span> 公式を「作れる」ようになる練習</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">公式を見たとき「なぜ成り立つか」を自分で導いてみる</span>
+    <div class="step-body">
+      <span class="ex">
+        例）等差数列の和 \(S_n = \dfrac{n(a_1 + a_n)}{2}\) の導出<br><br>
+        \[S_n = a_1 + a_2 + \cdots + a_n \quad \cdots \text{①}\]
+        \[S_n = a_n + a_{n-1} + \cdots + a_1 \quad \cdots \text{②}\]
+        \(\text{①} + \text{②}\)：<br>
+        \[2S_n = (a_1 + a_n) + (a_2 + a_{n-1}) + \cdots + (a_n + a_1)\]
+        各カッコの値はすべて \((a_1 + a_n)\)、それが \(n\) 個あるから：<br>
+        \[2S_n = n(a_1 + a_n)\]
+        \[\therefore\quad S_n = \frac{n(a_1 + a_n)}{2}\]<br>
+        この「ひっくり返して足す」という発想は、入試の他の問題でも使われる。<br>
+        導出を知っていると「何かを逆順に足してみる」という思考が生まれる。
+      </span>
+      公式を導出した後に「この導出で使った発想は何か」を一言で書く習慣をつけてください。それが翻訳力の積み上げになります。
+    </div>
+  </div>
+  <div class="step">
+    <span class="step-label">週1回、ノートを閉じて公式をゼロから導出する</span>
+    <div class="step-body">
+      <span class="ex">
+        週1回のルーティン（10〜15分）：<br><br>
+        ① 今週習った公式を1つ選ぶ<br>
+        ② 教科書・ノートを閉じる<br>
+        ③ 白紙に公式を導出してみる<br>
+        ④ 詰まったら開いて確認し、また閉じてやり直す<br>
+        ⑤ スラスラ導出できたら完了
+      </span>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2 id="how5" class="chapter">解き直しの核心：「どう気づくか」を考える</h2>
+
+<p>問題を間違えたとき、多くの人は解説を読んで「なるほど、こうやって解くのか」で終わります。しかしそれでは力になりません。</p>
+
+<p>本当に重要な問いは、<strong>「なぜその解き方に気づけるのか」</strong>です。解法そのものを覚えるのではなく、「問題文のどこに気づいたらその解法が見えてくるのか」を考える。これが、初見の問題を解ける力につながります。</p>
+
+<h3><span class="how-label">HOW</span> 「気づきの翻訳」を言語化する</h3>
+
+<p>間違えた問題を解説で理解した後、次の問いに答えてください。</p>
+
+<blockquote>
+  <p>「問題文の○○という表現を、△△と読み替えれば、この解法に気づけたはず」</p>
+  <p>「○○という条件が、△△を使うためのサインだった」</p>
+  <p>「○○を見た瞬間に□□をおこうと考えれば、ここから解き始められた」</p>
+</blockquote>
+
+<p>以下に、典型的な「気づきの翻訳」の例を示します。</p>
+
+<div class="insight-box">
+  <div class="ib-problem">
+    <span class="ib-label">問題文の表現</span>
+    「3つの実数解を持つ \(f(x) = x^3 + ax^2 + bx + c\) において、\(a\) の範囲を求めよ」
+  </div>
+  <div class="ib-arrow">↓ どう翻訳すれば気づけるか</div>
+  <div class="ib-insight">
+    <span class="ib-label">気づきの翻訳</span>
+    「<strong>3つの実数解を持つ</strong>」という表現を見た瞬間に：<br>
+    → グラフが \(x\) 軸と3点で交わる、に言い換える<br>
+    → 3次関数が3点で \(x\) 軸と交わるためには<strong>山と谷がある（極大・極小が存在する）</strong>、に言い換える<br>
+    → 極大値 \(&gt; 0\) かつ 極小値 \(&lt; 0\)、に言い換える<br>
+    → \(f'(x) = 0\) の2解を求め、\(f\) の値を調べる、という方針が生まれる<br><br>
+    <strong>ノートに書くこと：「実数解の個数 → グラフの交点の個数 → 極値の符号」という翻訳チェーンを覚える</strong>
+  </div>
+</div>
+
+<div class="insight-box">
+  <div class="ib-problem">
+    <span class="ib-label">問題文の表現</span>
+    「\(n\) が自然数のとき、\(n^2 + n\) が偶数であることを証明せよ」
+  </div>
+  <div class="ib-arrow">↓ どう翻訳すれば気づけるか</div>
+  <div class="ib-insight">
+    <span class="ib-label">気づきの翻訳</span>
+    「<strong>偶数であることを証明</strong>」という問われ方を見た瞬間に：<br>
+    → 「2の倍数であることを示す」に言い換える<br>
+    → \(n^2 + n = n(n+1)\) と因数分解してみる（実験）<br>
+    → \(n\) と \(n+1\) は連続する整数だから、必ずどちらかが偶数<br>
+    → \(n(n+1)\) は必ず2の倍数、すなわち偶数<br><br>
+    <strong>ノートに書くこと：「偶数 → 2k とおく or 2の倍数を示す」という翻訳を反射的に使えるようにする</strong>
+  </div>
+</div>
+
+<div class="insight-box">
+  <div class="ib-problem">
+    <span class="ib-label">問題文の表現</span>
+    「\(\sqrt{2} + \sqrt{3}\) の整数部分と小数部分を求めよ」
+  </div>
+  <div class="ib-arrow">↓ どう翻訳すれば気づけるか</div>
+  <div class="ib-insight">
+    <span class="ib-label">気づきの翻訳</span>
+    「整数部分と小数部分」という問われ方を見た瞬間に：<br>
+    → まず「大体いくつか」を実験で調べる<br>
+    → \(\sqrt{2} \approx 1.41,\quad \sqrt{3} \approx 1.73\) → 合計 \(\approx 3.14\)<br>
+    → 整数部分は \(3\)、小数部分は \((\sqrt{2} + \sqrt{3}) - 3\)<br>
+    → これを根号で正確に表す<br><br>
+    <strong>ノートに書くこと：「整数部分・小数部分 → まず概算で整数部分を特定する」という手順を覚える</strong>
+  </div>
+</div>
+
+<h3><span class="how-label">HOW</span> 正しい解き直しの手順</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">STEP 1｜解説を「理解」した後、閉じて自力で解き直す</span>
+    <div class="step-body">
+      「なるほど」と理解した後、解説を閉じてください。そこから自力でゼロから解き直します。書けなければ解説を開いてもう一度読み、また閉じて書く。これを「自力で解ける」まで繰り返します。
+    </div>
+  </div>
+  <div class="step">
+    <span class="step-label">STEP 2｜「なぜこの解法に気づけるか」を言葉にする</span>
+    <div class="step-body">
+      解き直しができたら、次の問いに答えてノートに書いてください。
+      <span class="ex">
+        「問題文の（　　　）という表現を<br>
+         （　　　）と読み替えれば、この解き方に気づけた」<br><br>
+        例：<br>
+        「『偶数であることを証明』を<br>
+         『2の倍数であることを示す』と読み替えれば、<br>
+         因数分解して連続整数の性質を使う方針に気づけた」
+      </span>
+    </div>
+  </div>
+  <div class="step">
+    <span class="step-label">STEP 3｜声に出して「解き方のプロセス」を説明する</span>
+    <div class="step-body">
+      解き直しができたら「数学が苦手な人に教えるつもり」で、①〜④のプロセスを声に出して説明してください。
+      <span class="ex">
+        「この問題は、まず『○○』という条件を見て<br>
+         △△に言い換えました。<br>
+         そうすると□□が使えると分かって、<br>
+         ◇◇という方針を立てました。<br>
+         あとは立式して計算するだけです」<br><br>
+        説明できれば → 本当に理解している証拠<br>
+        詰まった場所 → まだ理解が浅いところ
+      </span>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<h2 id="how6" class="chapter">具体的な勉強STEP（問題集の使い方）</h2>
+
+<p>「正しいやり方」が分かっても、問題集をどう使うかが決まらないと実行できません。以下が、問題集を使って着実に力をつける完全手順です。</p>
+
+<div class="study-flow">
+
+  <div class="study-step">
+    <div class="ss-num">1</div>
+    <div class="ss-body">
+      <span class="ss-title">その日の問題を解く（①〜④を意識して）</span>
+      <div class="ss-desc">
+        問題を開いたら、いきなり計算を始めない。まず①問題を把握→②実験→③翻訳→④方針の順に考えてから、⑤立式に進む。
+        <span class="ss-ex">
+          目安時間：1問あたり入試標準問題で10〜15分<br>
+          詰まった場合：5分考えて出てこなければ飛ばしてOK（後で解説を読む）
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="study-step">
+    <div class="ss-num">2</div>
+    <div class="ss-body">
+      <span class="ss-title">丸つけ・バツつけをする（正直に）</span>
+      <div class="ss-desc">
+        解き終わったら答え合わせ。自力で解けた ◯、解説を見た △、全く分からなかった ✕ をつける。この仕分けが復習の設計図になる。
+        <span class="ss-ex">
+          ◯ の問題 → 翌週に確認するだけでよい<br>
+          △ の問題 → 今日中に解き直す<br>
+          ✕ の問題 → 今日中に解き直す＋翌日もう一度解く
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="study-step">
+    <div class="ss-num">3</div>
+    <div class="ss-body">
+      <span class="ss-title">✕・△ の問題の解説を「プロセスごと」に読む</span>
+      <div class="ss-desc">
+        解説を読むとき「答えがこうなる」だけ追わないでください。①〜④の思考フェーズがどうなっているかを追います。
+        <span class="ss-ex">
+          解説を読みながら確認すること：<br><br>
+          「この問題のどの言葉が、どの定義・定理への翻訳のサインだったか」<br>
+          「方針はゴールからどう逆算されているか」<br>
+          「自分が詰まった場所はどこで、何が分かれば突破できたか」
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="study-step">
+    <div class="ss-num">4</div>
+    <div class="ss-body">
+      <span class="ss-title">「気づきの翻訳」をノートに1行書く</span>
+      <div class="ss-desc">
+        解説を読んで理解できたら、必ず次の一文をノートに書いてください。これが力になる解き直しと、ただの答え写しの決定的な差です。
+        <span class="ss-ex">
+          「（問題文のキーワード）を見たら（翻訳後の数学的意味）に言い換える」<br><br>
+          例：「『整数であることを示す』→ \(n = k\)（整数）とおいて整理する」<br>
+          例：「『最大値を求めよ』+2変数 → 1変数に置換して微分 or 相加相乗」
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="study-step">
+    <div class="ss-num">5</div>
+    <div class="ss-body">
+      <span class="ss-title">解説を閉じて、✕・△ の問題を自力で解き直す</span>
+      <div class="ss-desc">
+        解説を閉じて、ゼロから解き直します。途中で詰まっても解説を開かない。まず5分は自分で考える。
+        <span class="ss-ex">
+          解き直しで書くもの：<br><br>
+          ① 問題の条件・求めるものを書き出す<br>
+          ② 「翻訳」を一言書く<br>
+          ③ 「方針」を一言書く<br>
+          ④ そこから立式・計算する<br><br>
+          自力で書けた → ◯ に格上げ<br>
+          また詰まった → もう一度解説を読んでSTEP 3〜5を繰り返す
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="study-step">
+    <div class="ss-num">6</div>
+    <div class="ss-body">
+      <span class="ss-title">翌日：昨日の ✕・△ 問題をもう一度解く</span>
+      <div class="ss-desc">
+        翌日の勉強を始める前に、昨日の ✕・△ 問題だけをもう一度解きます。1問1〜2分で済むので、これを毎日のウォームアップにする。
+        <span class="ss-ex">
+          翌日のチェック：<br>
+          → 解けた → ◯（完全に定着したと判断してよい）<br>
+          → また詰まった → 翌翌日もSTEP 5〜6を繰り返す
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="study-step">
+    <div class="ss-num">7</div>
+    <div class="ss-body">
+      <span class="ss-title">1週間後：その週の ✕ 問題を「初見のつもり」で解く</span>
+      <div class="ss-desc">
+        1週間後に、その週に ✕ だった問題をもう一度解きます。「初見のつもりで」解くことが重要。①〜④の思考フェーズを最初からやり直す。
+        <span class="ss-ex">
+          確認の基準：<br>
+          → 解説なしで完答できた → 本当の意味でその解法が「武器」になった<br>
+          → 途中で詰まった → 翻訳か方針のどちらかがまだ曖昧。STEP 4に戻る
+        </span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="scene-box">
+  <span class="scene-label">📐 このSTEPを1ヶ月続けた後のあなた</span>
+  <p>問題集の ✕ がどんどん ◯ に変わっていく。「気づきの翻訳」のノートが積み上がって、自分だけの「解法キーワード辞典」になっている。新しい問題を見たとき「この問題のキーワードは○○。ということは△△に翻訳できる」という思考が自然に動き始める。数学が「解けるか解けないかの運ゲー」ではなく「考えれば解ける科目」に変わっていく感覚です。</p>
+</div>
+
+<hr>
+
+<h2 id="how7" class="chapter">エビングハウスの忘却曲線に基づく復習サイクル</h2>
+
+<p>ドイツの心理学者エビングハウスの研究で、人間は何もしなければ学習した内容を急速に忘れることが明らかになっています。しかし<strong>記憶が薄れる直前のタイミングで復習すると、忘却曲線が大きく緩やかになり、長期記憶への定着が加速します。</strong></p>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">忘却曲線が示す最適な復習タイミング</span>
+    <div class="step-body">
+      <span class="ex">
+        何もしない場合の記憶保持率：<br><br>
+        学習直後 … 100%<br>
+        20分後  … 約 58%<br>
+        1時間後 … 約 44%<br>
+        1日後   … 約 33%<br>
+        1週間後 … 約 25%<br>
+        1ヶ月後 … 約 21%<br><br>
+        ── 復習を入れると記憶保持率が跳ね上がる ──<br><br>
+        1回目の復習（学習翌日）→ 保持率が一気に約 80% 台へ回復<br>
+        2回目の復習（3日後）  → 保持率がさらに安定し約 85% 以上へ<br>
+        3回目の復習（7日後）  → 長期記憶としてほぼ定着（約 90% 以上）<br>
+        4回目の復習（14日後） → 完全定着。1ヶ月後でも約 95% を維持
+      </span>
+      つまり「1回やった問題をそのまま放置しない」ことが決定的に重要です。同じ問題を1回だけ完璧に解けても、1ヶ月後には8割近くを忘れています。
+    </div>
+  </div>
+</div>
+
+<h3><span class="how-label">HOW</span> 忘却曲線に合わせた問題集の復習スケジュール</h3>
+
+<div class="how-block">
+  <div class="step">
+    <span class="step-label">4回の復習タイミングを「翌日・3日後・7日後・14日後」に設定する</span>
+    <div class="step-body">
+      <span class="ex">
+        例）月曜日に問題1〜10を解いた場合の復習スケジュール：<br><br>
+        月（学習）  ：問題1〜10 を解く（STEP 1〜5 をすべて実行）<br>
+        火（1日後）  ：問題1〜10 の ✕・△ を解き直す  ← 忘却が始まる前に打つ手①<br>
+        木（3日後）  ：問題1〜10 の ✕・△ をもう一度解く ← 忘却が始まる前に打つ手②<br>
+        翌月（7日後）：問題1〜10 を全問「初見のつもり」で解く ← 長期記憶へ移行させる<br>
+        2週間後      ：問題1〜10 から ✕ が残っているものだけ最終確認 ← 完全定着
+      </span>
+    </div>
+  </div>
+  <div class="step">
+    <span class="step-label">毎日新しい問題を進めながら、過去の復習も並行させる</span>
+    <div class="step-body">
+      実際の運用では、毎日「今日の新問題」と「過去の復習問題」を両方こなします。
+      <span class="ex">
+        【1日の勉強構成（例）】<br><br>
+        ① 計算ルーティン（毎朝15分）<br>
+        ② 復習：「3日前」の ✕・△ 問題を解く（15〜20分）<br>
+        ③ 復習：「前日」の ✕・△ 問題を解く（10分）<br>
+        ④ 新規：今日の新しい問題を解く（30〜40分）<br><br>
+        ── 1週間の流れイメージ（1日10問新規ペース）──<br><br>
+        月：新10問（1〜10）<br>
+        火：復習① 1〜10 の ✕△ ／ 新10問（11〜20）<br>
+        水：復習① 11〜20 の ✕△ ／ 新10問（21〜30）<br>
+        木：復習② 1〜10 の ✕△ ／ 復習① 21〜30 の ✕△ ／ 新10問（31〜40）<br>
+        金：復習② 11〜20 の ✕△ ／ 新10問（41〜50）<br>
+        土：復習② 21〜30 の ✕△ ／ 復習① 41〜50 の ✕△ ／ 軽い確認テスト<br>
+        日：復習② 31〜40 の ✕△ ／ 7日後復習：1〜10 全問
+      </span>
+      最初は管理が複雑に見えますが、「前日と3日前の ✕△ を毎日解く」だけを意識すれば十分です。これだけで忘却曲線の1・2回目を自動的にカバーできます。
+    </div>
+  </div>
+  <div class="step">
+    <span class="step-label">✕・△・◯ の管理で「やることを最小化」する</span>
+    <div class="step-body">
+      復習は「全問やり直す」必要はありません。✕・△ の問題だけに絞ることで、時間を大幅に節約できます。
+      <span class="ex">
+        ◯（初見で正解）　→ 7日後の復習だけ。それ以降は省略してOK<br>
+        △（解説を見て解けた）→ 翌日・3日後・7日後の3回復習<br>
+        ✕（解説を見ても分からなかった）→ 翌日・3日後・7日後・14日後の4回復習<br><br>
+        ✕ の問題が ◯ に変わるまで、このサイクルを粘り強く回す。<br>
+        1ヶ月後に ✕ の問題が消えていれば、それが「本物の武器」になった証拠。
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="scene-box">
+  <span class="scene-label">📐 このサイクルを3ヶ月続けた後のあなた</span>
+  <p>問題集の✕がどんどん◯に変わっていく。1ヶ月前に間違えた問題を今日また見たとき、「あ、これは○○に翻訳すれば解ける問題だ」と瞬時に分かる。忘れていないから、解き直す必要すらない。エビングハウスの忘却曲線を味方にした勉強とは、こういう状態を作ることです。</p>
+</div>
+
+<hr>
+
+<div class="action-box">
+  <h3>📌 今日のアクションプラン</h3>
+  <p><strong>今日解いた（または解けなかった）数学の問題を1問選んで、「気づきの翻訳」を1行書いてください。</strong></p>
+  <p>やり方はこれだけです：</p>
+  <ol>
+    <li>間違えた問題の解説を読んで理解する</li>
+    <li>解説を閉じて、問題文を見直す</li>
+    <li>「問題文の（　）という表現を（　）と読み替えれば気づけた」を書く</li>
+    <li>その一文を書いてから、解説を閉じて自力で解き直す</li>
+    <li>明日の朝、もう一度同じ問題を解く</li>
+  </ol>
+  <p class="note">これを1ヶ月続けると、ノートに「自分の気づきの翻訳集」が積み上がります。その翻訳集こそが、どんな問題にも対応できる本物の数学力の源泉です。</p>
+</div>
+
+</div>
+</body>
+</html>
